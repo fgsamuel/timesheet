@@ -1,3 +1,6 @@
 .venv
 .python-version
 .idea
+.env
+*.sqlite3
+__pycache__
