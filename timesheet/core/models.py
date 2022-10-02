@@ -17,4 +17,4 @@ class ProjectTime(models.Model):
     ended_at = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.project} - {self.user} - {self.started_at} - {self.ended_at}"
+        return f"{self.project} - {self.user} - {self.started_at.date()}"

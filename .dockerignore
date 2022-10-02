@@ -1,0 +1,6 @@
+.venv
+nginx
+htmlcov
+.coverage
+.mypy_cache
+.pytest_cache
