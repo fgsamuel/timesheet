@@ -6,12 +6,11 @@ UserModel = get_user_model()
 
 class ModelBackendCustom(ModelBackend):
     def authenticate(self, request, login=None, password=None, **kwargs):
-        if login is None or password is None:
-            return
-        try:
-            user = UserModel._default_manager.get_by_natural_key(login)
-        except UserModel.DoesNotExist:
-            UserModel().set_password(password)
-        else:
-            if user.check_password(password) and self.user_can_authenticate(user):
-                return user
+        if login and password:
+            try:
+                user = UserModel._default_manager.get_by_natural_key(login)
+            except UserModel.DoesNotExist:
+                UserModel().set_password(password)
+            else:
+                if user.check_password(password) and self.user_can_authenticate(user):
+                    return user

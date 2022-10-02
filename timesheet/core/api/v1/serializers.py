@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from timesheet.core.models import Project
+
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
@@ -17,3 +19,13 @@ class UserCreateSerializer(UserSerializer):
 
     class Meta(UserSerializer.Meta):
         fields = ("id", "name", "login", "email", "password")  # type: ignore
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ("id", "title", "description", "users")
+
+
+class ProjectDetailSerializer(ProjectSerializer):
+    users = UserSerializer(many=True)
