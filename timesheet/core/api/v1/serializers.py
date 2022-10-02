@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from timesheet.core.models import Project
+from timesheet.core.models import ProjectTime
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,3 +30,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     users = UserSerializer(many=True)
+
+
+class ProjectTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectTime
+        fields = ("id", "user", "project", "started_at", "ended_at")

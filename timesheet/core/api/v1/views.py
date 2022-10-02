@@ -4,9 +4,11 @@ from rest_framework import viewsets
 
 from timesheet.core.api.v1.serializers import ProjectDetailSerializer
 from timesheet.core.api.v1.serializers import ProjectSerializer
+from timesheet.core.api.v1.serializers import ProjectTimeSerializer
 from timesheet.core.api.v1.serializers import UserCreateSerializer
 from timesheet.core.api.v1.serializers import UserSerializer
 from timesheet.core.models import Project
+from timesheet.core.models import ProjectTime
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -31,3 +33,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if self.action in ["create", "update", "partial_update"]:
             return ProjectSerializer
         return ProjectDetailSerializer
+
+
+class ProjectTimeViewSet(viewsets.ModelViewSet):
+    queryset = ProjectTime.objects.all()
+    serializer_class = ProjectTimeSerializer
