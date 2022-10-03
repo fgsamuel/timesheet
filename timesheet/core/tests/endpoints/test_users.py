@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.urls import reverse
+from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
@@ -36,3 +37,28 @@ class TestUsersEndpoint:
         data = {"name": "User 01", "email": "user01@email.com", "login": "user01"}
         result = authenticated_client.put(endpoint, data=data, format="json")
         assert result.status_code == 200
+
+    def test_admin_list_all_users(self, authenticated_client):
+        User.objects.create_user(username="teste", first_name="Teste")
+        endpoint = reverse("users-list")
+        result = authenticated_client.get(endpoint, format="json")
+        assert len(result.data) == 2
+
+    def test_user_can_list_only_itself(self):
+        user = User.objects.create_user(username="test01", first_name="Teste01")
+        User.objects.create_user(username="teste02", first_name="Teste02")
+        endpoint = reverse("users-list")
+        client = APIClient()
+        client.force_authenticate(user=user)
+        result = client.get(endpoint, format="json")
+        assert len(result.data) == 1
+        assert result.data[0]["name"] == "Teste01"
+
+    def test_user_cant_create_user(self):
+        user = User.objects.create_user(username="test01", first_name="Teste01")
+        endpoint = reverse("users-list")
+        client = APIClient()
+        client.force_authenticate(user=user)
+        data = {"name": "User 01", "email": "user01@email.com", "login": "user01", "password": "user01"}
+        result = client.post(endpoint, data=data, format="json")
+        assert result.status_code == 403
