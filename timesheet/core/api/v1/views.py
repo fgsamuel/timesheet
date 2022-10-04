@@ -32,7 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            raise PermissionDenied("Only admin can manage this resource")
+            raise PermissionDenied("Only admin can create user")
         return super().create(request, *args, **kwargs)
 
 
@@ -49,17 +49,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            raise PermissionDenied("Only admin can manage this resource")
+            raise PermissionDenied("Only admin can create project")
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            raise PermissionDenied("Only admin can manage this resource")
+            raise PermissionDenied("Only admin can update project")
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            raise PermissionDenied("Only admin can manage this resource")
+            raise PermissionDenied("Only admin can delete project")
         return super().destroy(request, *args, **kwargs)
 
 
